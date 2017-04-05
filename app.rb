@@ -2,6 +2,9 @@ require 'sinatra/base'
 require_relative './models/link'
 require 'data_mapper'
 
+ENV['RACK_ENV']||= 'development'
+
+
 class Bookmark < Sinatra::Base
 
 
