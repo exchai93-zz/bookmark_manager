@@ -1,4 +1,5 @@
 <ul id='url'>
+  <% begin %>
   <% @links.each do |link| %>
 
     <li>
@@ -9,5 +10,11 @@
       <%end%>
     </li>
   <% end %>
+  <% rescue %>
+  <h2> No links </h2>
+  <% end %>
 
+  <h1>Welcome echai93@gmail.com</h1>
+
+  You are user number: <%= @user_count %>
 </ul>

@@ -4,6 +4,7 @@ require_relative 'data_mapper_setup'
 
 class Bookmark < Sinatra::Base
 
+  enable :sessions
 
   get '/' do
     erb(:index)
@@ -12,6 +13,7 @@ class Bookmark < Sinatra::Base
 
   get '/links' do
     @links = Link.all
+    @user_count = User.all.count
     erb(:links)
   end
 
@@ -22,6 +24,7 @@ class Bookmark < Sinatra::Base
   post '/links' do
     link = Link.new(url: params[:url],
                   name: params[:name])
+
     tags = params[:tags].split(' ')
 
     tags.each do |tag|
@@ -35,6 +38,15 @@ class Bookmark < Sinatra::Base
     tag = Tag.first(name: params[:filter_tag])
     @links = tag ? tag.links : []
     erb(:links)
+  end
+
+  get '/signup' do
+    erb(:signup)
+  end
+
+  post '/signup' do
+    User.create(email: params[:email], password: params[:password])
+    redirect '/links'
   end
 
 end
