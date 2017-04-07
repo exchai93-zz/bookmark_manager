@@ -20,4 +20,23 @@ feature 'Signup form' do
     expect(page).to have_content 'Password and confirmation do not match'
     expect(User.count).to eq 0
   end
+
+  scenario 'user does not enter an email' do
+    visit '/users/new'
+    fill_in(:password, with: 'brocolli')
+    fill_in(:password_confirmation, with: 'brocolli')
+    click_button 'Submit'
+    expect(current_path).to eq '/users'
+    expect(User.count).to eq 0
+  end
+
+  scenario 'user enters invalid email' do
+    visit '/users/new'
+    fill_in(:email, with: 'echai93gmail')
+    fill_in(:password, with: 'brocolli')
+    fill_in(:password_confirmation, with: 'brocolli')
+    click_button 'Submit'
+    expect(current_path).to eq '/users'
+    expect(User.count).to eq 0
+  end
 end
