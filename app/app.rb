@@ -61,4 +61,13 @@ class Bookmark < Sinatra::Base
     @links = tag ? tag.links : []
     erb(:'links/index')
   end
+
+  get '/sessions/new' do
+    erb(:'sessions/new')
+  end
+
+  post '/sessions' do
+    User.authenticate(params[:email], params[:password])
+      redirect '/links'
+    end
 end
