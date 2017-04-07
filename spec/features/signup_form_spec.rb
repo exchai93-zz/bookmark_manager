@@ -17,7 +17,7 @@ feature 'Signup form' do
     fill_in(:password_confirmation, with: 'squash')
     click_button 'Submit'
     expect(current_path).to eq '/users'
-    expect(page).to have_content 'Password and confirmation do not match'
+    expect(page).to have_content 'Password does not match the confirmation'
     expect(User.count).to eq 0
   end
 
@@ -28,6 +28,7 @@ feature 'Signup form' do
     click_button 'Submit'
     expect(current_path).to eq '/users'
     expect(User.count).to eq 0
+    expect(page).to have_content('Email must not be blank')
   end
 
   scenario 'user enters invalid email' do
@@ -38,5 +39,18 @@ feature 'Signup form' do
     click_button 'Submit'
     expect(current_path).to eq '/users'
     expect(User.count).to eq 0
+    expect(page).to have_content('Email has an invalid format')
+  end
+
+  scenario 'user enters existing email' do
+    User.create(email: 'echai93@gmail.com')
+    visit '/users/new'
+    fill_in(:email, with: 'echai93@gmail.com')
+    fill_in(:password, with: 'brocolli')
+    fill_in(:password_confirmation, with: 'brocolli')
+    click_button 'Submit'
+    expect(current_path).to eq '/users'
+    expect(User.count).to eq 1
+    expect(page).to have_content "Email is already taken"
   end
 end
