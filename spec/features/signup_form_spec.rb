@@ -17,7 +17,7 @@ feature 'Signup form' do
     fill_in(:password_confirmation, with: 'squash')
     click_button 'Submit'
     expect(current_path).to eq '/users'
-    expect(page).not_to have_content 'Password and confirmation do not match'
+    expect(page).to have_content 'Password and confirmation do not match'
     expect(User.count).to eq 0
   end
 end
