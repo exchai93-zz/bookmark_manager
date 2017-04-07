@@ -3,9 +3,22 @@ feature 'Signup form' do
     visit '/signup'
     fill_in(:email, with: 'echai93@gmail.com')
     fill_in(:password, with: 'brocolli')
+    fill_in(:password_confirmation, with: 'brocolli')
     click_button 'Submit'
     expect(current_path).to eq '/links'
     expect(page).to have_content 'Welcome, echai93@gmail.com'
     expect(page).to have_content 'You are user number: 1'
+  end
+
+  scenario 'user enters mismatching password' do
+    visit '/signup'
+    fill_in(:email, with: 'echai93@gmail.com')
+    fill_in(:password, with: 'brocolli')
+    fill_in(:password_confirmation, with: 'squash')
+    click_button 'Submit'
+    expect(current_path).to eq '/links'
+    expect(page).not_to have_content 'Welcome, echai93@gmail.com'
+    expect(page).not_to have_content 'You are user number: 1'
+    expect(User.count).to eq 0
   end
 end
