@@ -13,19 +13,14 @@ class Bookmark < Sinatra::Base
     end
   end
 
-  get '/' do
-    erb(:index)
-    redirect '/links'
-  end
-
   get '/links' do
     @links = Link.all
     @user_count = User.all.count
-    erb(:links)
+    erb(:'links/index')
   end
 
   get '/links/new' do
-    erb(:new_links)
+    erb(:'links/new_links')
   end
 
   post '/links' do
@@ -44,14 +39,14 @@ class Bookmark < Sinatra::Base
   get '/tag/:filter_tag' do
     tag = Tag.first(name: params[:filter_tag])
     @links = tag ? tag.links : []
-    erb(:links)
+    erb(:'links/index')
   end
 
-  get '/signup' do
-    erb(:signup)
+  get '/users/new' do
+    erb(:'users/user_form')
   end
 
-  post '/signup' do
+  post '/users' do
     user = User.create(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
     session[:user_id] = user.id
     redirect '/links'
